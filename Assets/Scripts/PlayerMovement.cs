@@ -5,9 +5,16 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private InputReader inputReader;
+    private InputReader inputReader;
+    private CharacterController controller;
     [SerializeField] private Animator animator;
     [SerializeField] private float playerSpeed;
+
+    private void Awake() 
+    {
+        inputReader = GetComponent<InputReader>();
+        controller = GetComponent<CharacterController>();
+    }
 
     private void Update() 
     {
@@ -18,6 +25,6 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector3 movement = new Vector3(inputReader.movementValue.x, 0, inputReader.movementValue.y);
         movement *= playerSpeed * Time.deltaTime;
-        gameObject.transform.Translate(movement);
+        controller.Move(movement);
     }
 }
