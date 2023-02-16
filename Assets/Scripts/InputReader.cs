@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
 {
     private Controls controls;
     public Vector2 movementValue;
+    public EventHandler<Ray> SwitchCameraEvent;
 
     private void Awake() 
     {
@@ -18,5 +20,14 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
     public void OnMovement(InputAction.CallbackContext context)
     {
         movementValue = context.ReadValue<Vector2>();
+    }
+
+    public void OnSwitchCamera(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            Ray switchRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            SwitchCameraEvent.Invoke(this, switchRay);
+        }
     }
 }
