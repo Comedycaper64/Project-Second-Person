@@ -6,9 +6,16 @@ using UnityEngine;
 public class CameraObject : MonoBehaviour
 {
     [SerializeField] private GameObject virtualCamera; 
+    private bool activeCamera;
 
     public void EnableCamera(bool enable)
     {
         virtualCamera.SetActive(enable);
+        activeCamera = enable;
+    }
+
+    public bool IsCameraActive()
+    {
+        return activeCamera;
     }
 }

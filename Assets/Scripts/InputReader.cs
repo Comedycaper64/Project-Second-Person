@@ -9,6 +9,7 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
     private Controls controls;
     public Vector2 movementValue;
     public EventHandler<Ray> SwitchCameraEvent;
+    public event Action DisableEvent;
 
     private void Awake() 
     {
@@ -27,7 +28,15 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
         if (context.performed)
         {
             Ray switchRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-            SwitchCameraEvent.Invoke(this, switchRay);
+            SwitchCameraEvent?.Invoke(this, switchRay);
+        }
+    }
+
+    public void OnDisableEnemy(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            DisableEvent?.Invoke();
         }
     }
 }

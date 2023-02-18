@@ -44,6 +44,15 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DisableEnemy"",
+                    ""type"": ""Button"",
+                    ""id"": ""4553e589-4f9d-4af2-ae70-a1062eb5bb1f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -112,6 +121,17 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""action"": ""SwitchCamera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5063b191-5ccc-444d-bfe7-8876bcaaf7d4"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DisableEnemy"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -128,6 +148,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
         m_Player_SwitchCamera = m_Player.FindAction("SwitchCamera", throwIfNotFound: true);
+        m_Player_DisableEnemy = m_Player.FindAction("DisableEnemy", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -189,12 +210,14 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private readonly InputAction m_Player_Movement;
     private readonly InputAction m_Player_SwitchCamera;
+    private readonly InputAction m_Player_DisableEnemy;
     public struct PlayerActions
     {
         private @Controls m_Wrapper;
         public PlayerActions(@Controls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_Player_Movement;
         public InputAction @SwitchCamera => m_Wrapper.m_Player_SwitchCamera;
+        public InputAction @DisableEnemy => m_Wrapper.m_Player_DisableEnemy;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -210,6 +233,9 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @SwitchCamera.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchCamera;
                 @SwitchCamera.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchCamera;
                 @SwitchCamera.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchCamera;
+                @DisableEnemy.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDisableEnemy;
+                @DisableEnemy.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDisableEnemy;
+                @DisableEnemy.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDisableEnemy;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -220,6 +246,9 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @SwitchCamera.started += instance.OnSwitchCamera;
                 @SwitchCamera.performed += instance.OnSwitchCamera;
                 @SwitchCamera.canceled += instance.OnSwitchCamera;
+                @DisableEnemy.started += instance.OnDisableEnemy;
+                @DisableEnemy.performed += instance.OnDisableEnemy;
+                @DisableEnemy.canceled += instance.OnDisableEnemy;
             }
         }
     }
@@ -237,5 +266,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnSwitchCamera(InputAction.CallbackContext context);
+        void OnDisableEnemy(InputAction.CallbackContext context);
     }
 }

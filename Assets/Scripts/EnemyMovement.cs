@@ -2,22 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
+using System;
 
 public class EnemyMovement : MonoBehaviour
 {
     private AIPath aIPath;
-
+    private InputReader inputReader;
+    [SerializeField] private CameraObject cameraObject;
     [SerializeField] private List<Transform> patrolRoute = new List<Transform>();
     private int patrolIndex = 0;
     private bool reversingThroughPatrol = false;
     private bool waiting = false;
     private bool patrolling = true;
+    private bool disabled = false;
     [SerializeField] private float patrolWaitTime;
+    [SerializeField] private float disabledTime;
 
     private void Awake() 
     {
         aIPath = GetComponent<AIPath>();
         SetMovePosition(patrolRoute[patrolIndex].position);    
+        inputReader = GameObject.FindGameObjectWithTag("Player").GetComponent<InputReader>();
+        inputReader.DisableEvent += DisableEnemy;
     }
 
     private void Update() 
@@ -34,6 +40,24 @@ public class EnemyMovement : MonoBehaviour
         {
             StartCoroutine(UpdatePatrol());
         }
+    }
+
+    private void DisableEnemy()
+    {
+        if (cameraObject.IsCameraActive() && !disabled && AbilityCooldowns.Instance.CanDisable())
+        {
+            StartCoroutine(DisableMovement());
+        }
+    }
+
+    private IEnumerator DisableMovement()
+    {
+        AbilityCooldowns.Instance.SetDisableCooldown();
+        disabled = true;
+        ToggleMovement(false);
+        yield return new WaitForSeconds(disabledTime);
+        ToggleMovement(true);
+        disabled = false;
     }
 
     private IEnumerator UpdatePatrol()
@@ -73,5 +97,10 @@ public class EnemyMovement : MonoBehaviour
     private void SetMovePosition(Vector3 movePosition)
     {
         aIPath.destination = movePosition;
+    }
+
+    private void ToggleMovement(bool enable)
+    {
+        aIPath.canMove = enable;
     }
 }
