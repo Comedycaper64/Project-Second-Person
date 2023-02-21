@@ -7,16 +7,13 @@ public class LevelGrid : MonoBehaviour
 {
     //Static-ed for obvious reasons
     public static LevelGrid Instance {get; private set;}
-
-    public event EventHandler OnAnyUnitMovedGridPosition;
-
     [SerializeField] private Transform gridDebugObjectPrefab;
 
     [SerializeField] private int width;
     [SerializeField] private int height;
     [SerializeField] private float cellSize;
 
-    private GridSystem<GridObject> gridSystem;
+    private GridSystem gridSystem;
 
     private void Awake() 
     {
@@ -29,9 +26,15 @@ public class LevelGrid : MonoBehaviour
 
         Instance = this;
         //Gridsystem is created
-        gridSystem = new GridSystem<GridObject>(width, height, cellSize, 
-                (GridSystem<GridObject> g, GridPosition gridPosition) => new GridObject(g, gridPosition));
-
+        gridSystem = new GridSystem(width, height, cellSize);
+        for(int x = 0; x < width; x++)
+        {
+            for(int z = 0; z < height; z++)
+            {     
+                GridPosition gridPosition = new GridPosition(x, z);
+                GetGridObject(gridPosition).SetIsWalkable(gridSystem.CheckIfTileExists(gridPosition));
+            }
+        }
         //gridSystem.CreateDebugObjects(gridDebugObjectPrefab);
     }
 
@@ -61,6 +64,8 @@ public class LevelGrid : MonoBehaviour
 
     public float GetCellSize() => gridSystem.GetCellSize();
 
+    public Vector3 GetCellCentre(GridPosition gridPosition) => gridSystem.GetCellCenter(gridPosition);
+
     public bool IsWalkableGridPosition(GridPosition gridPosition)
     {
         if (!IsValidGridPosition(gridPosition)) {return false;}
@@ -69,37 +74,11 @@ public class LevelGrid : MonoBehaviour
         return gridObject.IsWalkable();
     }
 
-    public bool HasCameraGridPosition(GridPosition gridPosition)
-    {
-        if (!IsValidGridPosition(gridPosition)) {return false;}
-
-        GridObject gridObject = GetGridObject(gridPosition);
-        return gridObject.HasCamera();
-    }
-
-    // public bool HasAnyUnitOnGridPosition(GridPosition gridPosition)
+    // public bool HasCameraGridPosition(GridPosition gridPosition)
     // {
-    //     if (!HasGridObject(gridPosition))
-    //         return false;    
-    //     GridObject gridObject = gridSystem.GetGridObject(gridPosition);
-    //     return gridObject.HasAnyUnit();
-    // }
+    //     if (!IsValidGridPosition(gridPosition)) {return false;}
 
-    // public Unit GetUnitAtGridPosition(GridPosition gridPosition)
-    // {
-    //     GridObject gridObject = gridSystem.GetGridObject(gridPosition);
-    //     return gridObject.GetUnit();
-    // }
-
-    // public IInteractable GetInteractableAtGridPosition(GridPosition gridPosition)
-    // {
-    //     GridObject gridObject = gridSystem.GetGridObject(gridPosition);
-    //     return gridObject.GetInteractable();
-    // }
-
-    // public void SetInteractableAtGridPosition(GridPosition gridPosition, IInteractable interactable)
-    // {
-    //     GridObject gridObject = gridSystem.GetGridObject(gridPosition);
-    //     gridObject.SetInteractable(interactable);
+    //     GridObject gridObject = GetGridObject(gridPosition);
+    //     return gridObject.HasCamera();
     // }
 }
