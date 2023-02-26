@@ -13,10 +13,11 @@ public class EnemyMovement : MonoBehaviour
     private int patrolIndex = 0;
     private bool reversingThroughPatrol = false;
     private bool waiting = false;
-    private bool patrolling = true;
+    public bool patrolling = true;
     private bool disabled = false;
     [SerializeField] private float patrolWaitTime;
     [SerializeField] private float disabledTime;
+    private Transform playerTransform;
 
     private void Awake() 
     {
@@ -31,6 +32,10 @@ public class EnemyMovement : MonoBehaviour
         if (patrolling)
         {
             CheckDestinationReached();
+        }
+        else
+        {
+            SetMovePosition(playerTransform.position);
         }
     }
 
@@ -88,13 +93,19 @@ public class EnemyMovement : MonoBehaviour
         waiting = false;
     }
 
-    public void ChasePlayer(Vector3 playerTransform)
+    public void ResumePatrol()
     {
-        patrolling = false;
-        SetMovePosition(playerTransform);
+        patrolling = true;
+        SetMovePosition(patrolRoute[patrolIndex].position);
     }
 
-    private void SetMovePosition(Vector3 movePosition)
+    public void ChasePlayer(Transform playerTransform)
+    {
+        patrolling = false;
+        this.playerTransform = playerTransform;
+    }
+
+    public void SetMovePosition(Vector3 movePosition)
     {
         aIPath.destination = movePosition;
     }
