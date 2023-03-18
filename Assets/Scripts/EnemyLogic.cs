@@ -61,7 +61,7 @@ public class EnemyLogic : MonoBehaviour
 
         RaycastHit hit;
         Vector3 playerDir = ((player.transform.position + new Vector3(0, 0.9f, 0)) - cameraLocation.position).normalized; //adding 0.9f to compensate for height
-        Debug.Log(Vector3.Dot(cameraLocation.forward, playerDir));
+        //Debug.Log(Vector3.Dot(cameraLocation.forward, playerDir));
         if (Vector3.Dot(cameraLocation.forward, playerDir) < (1 - viewCone))
         {
             return false;

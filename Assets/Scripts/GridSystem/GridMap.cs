@@ -14,11 +14,14 @@ public class GridMap : MonoBehaviour
     private int mapHeight;
     private Transform mapContainer;
     private GridLayoutGroup layoutGroup;
+    private GridPosition activeCameraGridPosition;
 
     [SerializeField] private float mapRefreshTime;
+    [SerializeField] private float cameraMapViewRange;
 
     [SerializeField] private GameObject walkableTile;
     [SerializeField] private GameObject unWalkableTile;
+    [SerializeField] private GameObject unseenTile;
     [SerializeField] private GameObject playerTile;
     [SerializeField] private GameObject cameraTile;
 
@@ -43,7 +46,12 @@ public class GridMap : MonoBehaviour
         List<GridPosition> cameraPositions = new List<GridPosition>();
         foreach(GameObject camera in cameras)
         {
-            cameraPositions.Add(LevelGrid.Instance.GetGridPosition(camera.transform.position));
+            GridPosition cameraPosition = LevelGrid.Instance.GetGridPosition(camera.transform.position);
+            cameraPositions.Add(cameraPosition);
+            if (camera.GetComponent<CameraObject>().IsCameraActive())
+            {
+                activeCameraGridPosition = cameraPosition;
+            }
         }
 
         for(int x = 0; x < mapWidth; x++)
@@ -51,9 +59,14 @@ public class GridMap : MonoBehaviour
             for(int z = 0; z < mapHeight; z++)
             {
                 GridPosition currentGridPosition = new GridPosition(x, z);
+                GridPosition gridDistanceFromActiveCam = currentGridPosition - activeCameraGridPosition;
                 if (currentGridPosition == playerPosition)
                 {
                     Instantiate(playerTile, mapContainer);
+                }
+                else if((Mathf.Abs(gridDistanceFromActiveCam.x) + Mathf.Abs(gridDistanceFromActiveCam.z)) > cameraMapViewRange)
+                {
+                    Instantiate(unseenTile, mapContainer);
                 }
                 else if (cameraPositions.Contains(currentGridPosition))
                 {

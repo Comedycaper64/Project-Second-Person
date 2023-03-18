@@ -696,7 +696,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_RenderShadows: 1
   m_RequiresDepthTextureOption: 2
-  m_RequiresOpaqueTextureOption: 2
+  m_RequiresOpaqueTextureOption: 1
   m_CameraType: 0
   m_Cameras: []
   m_RendererIndex: -1
@@ -2609,10 +2609,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 148abae60088d7547873ae3e7d839f4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapRefreshTime: 0.5
+  mapRefreshTime: 0.25
+  cameraMapViewRange: 5
   walkableTile: {fileID: 2409735426194698744, guid: 2c30489da467741468919e1f7f1d7cf1,
     type: 3}
   unWalkableTile: {fileID: 7528340993909365892, guid: 77f24dac3c8455849947868a8ad24f16,
+    type: 3}
+  unseenTile: {fileID: 7528340993909365892, guid: ad07a9c15cc2a7e4b83a1b776198e7e5,
     type: 3}
   playerTile: {fileID: 4804249541825491822, guid: e2cb7feced66cc5448ba1b1afd15ec80,
     type: 3}
