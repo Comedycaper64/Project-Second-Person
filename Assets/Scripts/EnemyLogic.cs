@@ -8,10 +8,11 @@ public class EnemyLogic : MonoBehaviour
     private GameObject player;
     [SerializeField] private Transform cameraLocation;
     private EnemyMovement enemyMovement;
-    private bool alerted = false;
+    public bool alerted = false;
     private UIManager uIManager;
     [Range(0,1)] private float alertMeter = 0;
     [SerializeField] private float alertIncreaseSpeed;
+    [SerializeField] private float alertDecreaseSpeed;
     [Range(0,1)] [SerializeField] private float viewCone;
 
     private void Awake() 
@@ -36,9 +37,12 @@ public class EnemyLogic : MonoBehaviour
             if (!uIManager.IsVisibleUIActive()) {uIManager.ToggleVisibleUI(true);}
 
             alertMeter = Mathf.Min(alertMeter + alertIncreaseSpeed * Time.deltaTime, 1f);
+            enemyMovement.lastKnownPlayerLocation = player.transform.position;
+            enemyMovement.canSeePlayer = true;
             if ((alertMeter == 1) && !alerted)
             {
                 alerted = true;
+                uIManager.ToggleAlertedUI(true);
                 enemyMovement.ChasePlayer(player.transform);
             }
         }
@@ -46,10 +50,12 @@ public class EnemyLogic : MonoBehaviour
         {
             if (uIManager.IsVisibleUIActive()) {uIManager.ToggleVisibleUI(false);}
 
-            alertMeter = Mathf.Max(alertMeter - alertIncreaseSpeed * 0.5f * Time.deltaTime, 0f);
+            alertMeter = Mathf.Max(alertMeter - alertDecreaseSpeed * Time.deltaTime, 0f);
+            enemyMovement.canSeePlayer = false;
             if ((alertMeter == 0) && alerted)
             {
                 alerted = false;
+                uIManager.ToggleAlertedUI(false);
                 enemyMovement.ResumePatrol();
             }
         }

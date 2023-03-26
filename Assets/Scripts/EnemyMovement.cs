@@ -16,8 +16,11 @@ public class EnemyMovement : MonoBehaviour
     public bool patrolling = true;
     private bool disabled = false;
     [SerializeField] private float patrolWaitTime;
+    [SerializeField] private float rotateSpeed;
     [SerializeField] private float disabledTime;
     private Transform playerTransform;
+    public Vector3 lastKnownPlayerLocation;
+    public bool canSeePlayer;
 
     private void Awake() 
     {
@@ -31,19 +34,40 @@ public class EnemyMovement : MonoBehaviour
     {
         if (patrolling)
         {
-            CheckDestinationReached();
+            if (CheckDestinationReached())
+            {
+                StartCoroutine(UpdatePatrol());
+            }
         }
         else
         {
-            SetMovePosition(playerTransform.position);
+            if (canSeePlayer)
+            {
+                SetMovePosition(playerTransform.position);
+            }
+            else
+            {
+                if (CheckDestinationReached())
+                {
+                    transform.Rotate(new Vector3(0, rotateSpeed * Time.deltaTime, 0));
+                }
+                else
+                {
+                    SetMovePosition(lastKnownPlayerLocation);
+                }   
+            }
         }
     }
 
-    public void CheckDestinationReached()
+    public bool CheckDestinationReached()
     {
         if (aIPath.reachedDestination && !waiting)
         {
-            StartCoroutine(UpdatePatrol());
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 

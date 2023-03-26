@@ -6,6 +6,7 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
     [SerializeField] private GameObject visibleText;
+    [SerializeField] private GameObject alertedText;
 
     private void Awake() 
     {
@@ -20,6 +21,11 @@ public class UIManager : MonoBehaviour
     public bool IsVisibleUIActive()
     {
         return visibleText.activeInHierarchy;
+    }
+
+    public void ToggleAlertedUI(bool enable)
+    {
+        alertedText.SetActive(enable);
     }
     
 }

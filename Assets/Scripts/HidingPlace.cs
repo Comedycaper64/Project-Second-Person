@@ -6,6 +6,7 @@ public class HidingPlace : MonoBehaviour
 {
     private GameObject player;
     private bool playerHidden = false;
+    private bool enemyInRange = false;
 
     private void Update() 
     {
@@ -21,6 +22,15 @@ public class HidingPlace : MonoBehaviour
         {
             player = other.gameObject;
         }
+
+        if (other.gameObject.TryGetComponent<EnemyLogic>(out EnemyLogic enemyLogic))
+        {
+            if (enemyLogic.alerted)
+            {
+                HidePlayer(false);
+            }
+            enemyInRange = true;
+        }
     }
 
     private void OnTriggerExit(Collider other) 
@@ -29,10 +39,17 @@ public class HidingPlace : MonoBehaviour
         {
             player = null;
         }
+
+        if (other.gameObject.TryGetComponent<EnemyLogic>(out EnemyLogic enemyLogic))
+        {
+            enemyInRange = false;
+        }
     }
 
     private void HidePlayer(bool enable)
     {
+        if ((player == null) || enemyInRange) {return;}
+
         player.SetActive(!enable);
         playerHidden = enable;
     }

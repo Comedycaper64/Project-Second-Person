@@ -24,7 +24,15 @@ public class PlayerMovement : MonoBehaviour
     private void Move()
     {
         Vector3 movement = new Vector3(inputReader.movementValue.x, 0, inputReader.movementValue.y);
-        movement *= playerSpeed * Time.deltaTime;
-        controller.Move(movement);
+        controller.Move(movement * playerSpeed * Time.deltaTime);
+        FaceMovementDirection(movement);
+        animator.SetFloat("Speed", movement.magnitude * playerSpeed * 5);
+    }
+
+    private void FaceMovementDirection(Vector3 movement)
+    {
+        if (movement == Vector3.zero) {return;}
+
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(movement), 10f * Time.deltaTime);
     }
 }
