@@ -15,6 +15,8 @@ public class EnemyMovement : MonoBehaviour
     private bool waiting = false;
     public bool patrolling = true;
     private bool disabled = false;
+    [SerializeField] private float patrolSpeed;
+    [SerializeField] private float chaseSpeed;
     [SerializeField] private float patrolWaitTime;
     [SerializeField] private float rotateSpeed;
     [SerializeField] private float disabledTime;
@@ -120,12 +122,14 @@ public class EnemyMovement : MonoBehaviour
     public void ResumePatrol()
     {
         patrolling = true;
+        aIPath.maxSpeed = patrolSpeed;
         SetMovePosition(patrolRoute[patrolIndex].position);
     }
 
     public void ChasePlayer(Transform playerTransform)
     {
         patrolling = false;
+        aIPath.maxSpeed = chaseSpeed;
         this.playerTransform = playerTransform;
     }
 

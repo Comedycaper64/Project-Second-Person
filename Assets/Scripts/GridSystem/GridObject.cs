@@ -7,7 +7,7 @@ public class GridObject
     //Each tile on the Grid is a GridObject
     private GridSystem gridSystem;
     private bool isWalkable;
-    private bool hasCamera;
+    private bool isScrambled = false;
     private GridPosition gridPosition;  //Position of this tile
 
     public GridObject(GridSystem gridSystem, GridPosition gridPosition)  //Constructor
@@ -30,6 +30,16 @@ public class GridObject
     // {
     //     this.hasCamera = hasCamera;
     // }
+
+    public bool IsScrambled()
+    {
+        return isScrambled;
+    }
+
+    public void SetScrambled(bool isScrambled)
+    {
+        this.isScrambled = isScrambled;
+    }
 
     public bool IsWalkable()
     {

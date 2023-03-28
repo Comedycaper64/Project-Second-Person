@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,7 @@ public class GridMap : MonoBehaviour
     //Get list of active bots
     private PlayerMovement player;
     private GameObject[] cameras;
-    private List<Scrambler> scramblers = new List<Scrambler>();
+    [SerializeField] private List<Scrambler> scramblers = new List<Scrambler>();
 
     private int mapWidth;
     private int mapHeight;
@@ -25,6 +26,7 @@ public class GridMap : MonoBehaviour
     [SerializeField] private GameObject walkableTile;
     [SerializeField] private GameObject unWalkableTile;
     [SerializeField] private GameObject unseenTile;
+    [SerializeField] private GameObject scrambledTile;
     [SerializeField] private GameObject playerTile;
     [SerializeField] private GameObject cameraTile;
 
@@ -40,13 +42,49 @@ public class GridMap : MonoBehaviour
         layoutGroup.cellSize = new Vector2(mapSize, mapSize);
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
         cameras = GameObject.FindGameObjectsWithTag("Camera");
-        GameObject[] tempScramblers = GameObject.FindGameObjectsWithTag("Scramblers");
+        GameObject[] tempScramblers = GameObject.FindGameObjectsWithTag("Scrambler");
         foreach(GameObject scrambler in tempScramblers)
         {
             scramblers.Add(scrambler.GetComponent<Scrambler>());
         }
 
+        SetScrambledTiles();
+
+        Scrambler.scramblerToggled += SetScrambledTiles;
+
         StartCoroutine(GenerateMap());
+    }
+
+    private void SetScrambledTiles()
+    {
+        for(int x = 0; x < mapWidth; x++)
+        {
+            for(int z = 0; z < mapHeight; z++)
+            {
+                LevelGrid.Instance.GetGridObject(new GridPosition(x,z)).SetScrambled(false);
+            }
+        }
+
+        foreach(Scrambler scrambler in scramblers)
+        {
+            if (!scrambler.scramblerEnabled) {continue;}
+
+            for (int i = scrambler.scramblerPosition.x - scrambler.scramblerRange; i <= scrambler.scramblerPosition.x + scrambler.scramblerRange; i++)
+            {
+                for (int j = scrambler.scramblerPosition.z - scrambler.scramblerRange; j <= scrambler.scramblerPosition.z + scrambler.scramblerRange; j++)
+                {
+                    GridPosition gridPosition = new GridPosition(i,j);
+                    if (LevelGrid.Instance.IsWithinGrid(gridPosition))
+                    {
+                        GridPosition distanceFromScrambler = gridPosition - scrambler.scramblerPosition;
+                        if ((Mathf.Abs(distanceFromScrambler.x) + Mathf.Abs(distanceFromScrambler.z)) <= scrambler.scramblerRange)
+                        {
+                            LevelGrid.Instance.GetGridObject(gridPosition).SetScrambled(true);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private IEnumerator GenerateMap()
@@ -55,7 +93,6 @@ public class GridMap : MonoBehaviour
         GridPosition playerPosition = LevelGrid.Instance.GetGridPosition(player.transform.position);
         //Debug.Log(playerPosition);
         List<GridPosition> cameraPositions = new List<GridPosition>();
-        List<GridPosition> scramblerPositions = new List<GridPosition>();
         foreach(GameObject camera in cameras)
         {
             GridPosition cameraPosition = LevelGrid.Instance.GetGridPosition(camera.transform.position);
@@ -66,22 +103,10 @@ public class GridMap : MonoBehaviour
             }
         }
 
-        foreach(Scrambler scrambler in scramblers)
-        {
-            if (scrambler.scramblerEnabled)
-            {
-                GridPosition scramblerPosition = LevelGrid.Instance.GetGridPosition(scrambler.transform.position);
-                scramblerPositions.Add(scramblerPosition);
-            }
-        }
-
         for(int x = 0; x < mapWidth; x++)
         {
             for(int z = 0; z < mapHeight; z++)
             {
-
-                //check if tile is within scrambling range of a scrambler. If so, then make the tile be scrambled
-
                 GridPosition currentGridPosition = new GridPosition(x, z);
                 GridPosition gridDistanceFromActiveCam = currentGridPosition - activeCameraGridPosition;
                 GameObject spawnedTile;
@@ -92,6 +117,10 @@ public class GridMap : MonoBehaviour
                 else if((Mathf.Abs(gridDistanceFromActiveCam.x) + Mathf.Abs(gridDistanceFromActiveCam.z)) > cameraMapViewRange)
                 {
                     spawnedTile = Instantiate(unseenTile, mapContainer);
+                }
+                else if (LevelGrid.Instance.GetGridObject(currentGridPosition).IsScrambled())
+                {
+                    spawnedTile = Instantiate(scrambledTile, mapContainer);
                 }
                 else if (cameraPositions.Contains(currentGridPosition))
                 {
@@ -112,6 +141,11 @@ public class GridMap : MonoBehaviour
         yield return new WaitForSeconds(mapRefreshTime);
 
         StartCoroutine(GenerateMap());
+    }
+
+    private void OnDestroy() 
+    {
+        Scrambler.scramblerToggled -= SetScrambledTiles;   
     }
 
     private void ClearMapContainer()

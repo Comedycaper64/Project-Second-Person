@@ -76,14 +76,18 @@ public class GridSystem
         return true;
     }
 
+    public bool IsWithinGrid(GridPosition gridPosition)
+    {
+        return gridPosition.x >= 0 && 
+                gridPosition.z >= 0 && 
+                gridPosition.x < width && 
+                gridPosition.z < height;
+    }
+
     //Tests if the tile is within the Grid
     public bool IsValidGridPosition(GridPosition gridPosition)
     {
-        return  gridPosition.x >= 0 && 
-                gridPosition.z >= 0 && 
-                gridPosition.x < width && 
-                gridPosition.z < height &&
-                CheckIfTileExists(gridPosition);
+        return IsWithinGrid(gridPosition) && CheckIfTileExists(gridPosition);
     }
 
     public int GetWidth() //of the Grid
