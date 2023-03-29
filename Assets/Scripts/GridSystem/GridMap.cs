@@ -17,18 +17,20 @@ public class GridMap : MonoBehaviour
     private float mapSize;
     private float mapTileScale;
     private Transform mapContainer;
+    private List<GridMapTile> mapTiles = new List<GridMapTile>();
     private GridLayoutGroup layoutGroup;
     private GridPosition activeCameraGridPosition;
 
     [SerializeField] private float mapRefreshTime;
     [SerializeField] private float cameraMapViewRange;
 
-    [SerializeField] private GameObject walkableTile;
-    [SerializeField] private GameObject unWalkableTile;
-    [SerializeField] private GameObject unseenTile;
-    [SerializeField] private GameObject scrambledTile;
-    [SerializeField] private GameObject playerTile;
-    [SerializeField] private GameObject cameraTile;
+    [SerializeField] private GameObject mapTile;
+    [SerializeField] private Sprite unWalkableSprite;
+    [SerializeField] private Sprite walkableSprite;
+    [SerializeField] private Sprite unseenSprite;
+    [SerializeField] private Sprite scrambledSprite;
+    [SerializeField] private Sprite playerSprite;
+    [SerializeField] private Sprite cameraSprite;
 
     private void Start() 
     {
@@ -52,7 +54,7 @@ public class GridMap : MonoBehaviour
 
         Scrambler.scramblerToggled += SetScrambledTiles;
 
-        StartCoroutine(GenerateMap());
+        GenerateMap();
     }
 
     private void SetScrambledTiles()
@@ -87,11 +89,27 @@ public class GridMap : MonoBehaviour
         }
     }
 
-    private IEnumerator GenerateMap()
-    {   
+    private void GenerateMap()
+    {
         ClearMapContainer();
+        for(int x = 0; x < mapWidth; x++)
+        {
+            for(int z = 0; z < mapHeight; z++)
+            {
+                GridPosition currentGridPosition = new GridPosition(x, z);
+                GridMapTile spawnedTile = Instantiate(mapTile, mapContainer).GetComponent<GridMapTile>();
+                spawnedTile.transform.localScale = new Vector3(mapTileScale, mapTileScale, mapTileScale);
+                spawnedTile.SetGridPosition(currentGridPosition);
+                mapTiles.Add(spawnedTile);
+            }
+        }
+
+        StartCoroutine(UpdateMap());
+    }
+
+    private IEnumerator UpdateMap()
+    {   
         GridPosition playerPosition = LevelGrid.Instance.GetGridPosition(player.transform.position);
-        //Debug.Log(playerPosition);
         List<GridPosition> cameraPositions = new List<GridPosition>();
         foreach(GameObject camera in cameras)
         {
@@ -103,44 +121,52 @@ public class GridMap : MonoBehaviour
             }
         }
 
-        for(int x = 0; x < mapWidth; x++)
+        foreach(GridMapTile tile in mapTiles)
         {
-            for(int z = 0; z < mapHeight; z++)
+            GridPosition currentGridPosition = tile.GetGridPosition();
+            GridPosition gridDistanceFromActiveCam = currentGridPosition - activeCameraGridPosition;
+            if (currentGridPosition == playerPosition)
             {
-                GridPosition currentGridPosition = new GridPosition(x, z);
-                GridPosition gridDistanceFromActiveCam = currentGridPosition - activeCameraGridPosition;
-                GameObject spawnedTile;
-                if (currentGridPosition == playerPosition)
-                {
-                    spawnedTile = Instantiate(playerTile, mapContainer);
-                }
-                else if((Mathf.Abs(gridDistanceFromActiveCam.x) + Mathf.Abs(gridDistanceFromActiveCam.z)) > cameraMapViewRange)
-                {
-                    spawnedTile = Instantiate(unseenTile, mapContainer);
-                }
-                else if (LevelGrid.Instance.GetGridObject(currentGridPosition).IsScrambled())
-                {
-                    spawnedTile = Instantiate(scrambledTile, mapContainer);
-                }
-                else if (cameraPositions.Contains(currentGridPosition))
-                {
-                    spawnedTile = Instantiate(cameraTile, mapContainer);
-                }
-                else if (LevelGrid.Instance.IsWalkableGridPosition(currentGridPosition))
-                {
-                    spawnedTile = Instantiate(walkableTile, mapContainer);
-                }
-                else
-                {
-                    spawnedTile = Instantiate(unWalkableTile, mapContainer);
-                }
-                spawnedTile.transform.localScale = new Vector3(mapTileScale, mapTileScale, mapTileScale);
+                tile.SetImage(playerSprite);
+            }
+            else if((Mathf.Abs(gridDistanceFromActiveCam.x) + Mathf.Abs(gridDistanceFromActiveCam.z)) > cameraMapViewRange)
+            {
+                tile.SetImage(unseenSprite);
+            }
+            else if (LevelGrid.Instance.GetGridObject(currentGridPosition).IsScrambled())
+            {
+                tile.SetImage(scrambledSprite);
+            }
+            else if (cameraPositions.Contains(currentGridPosition))
+            {
+                tile.SetImage(cameraSprite);
+            }
+            else if (LevelGrid.Instance.IsWalkableGridPosition(currentGridPosition))
+            {
+                tile.SetImage(walkableSprite);
+            }
+            else
+            {
+                tile.SetImage(unWalkableSprite);
             }
         }
 
         yield return new WaitForSeconds(mapRefreshTime);
 
-        StartCoroutine(GenerateMap());
+        StartCoroutine(UpdateMap());
+    }
+
+    public void ToggleTeleportUI(bool enable)
+    {
+        if (enable)
+        {
+            foreach(GridMapTile tile in mapTiles)
+            {
+                GridPosition currentGridPosition = tile.GetGridPosition();
+                //test to see if tile is in teleport range, is walkable and valid, isn't scrambled. If yes then enable the button.
+                //Also change teleport button to be cancel button instead
+            }
+        }
     }
 
     private void OnDestroy() 

@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    private bool canMove = true;
     private InputReader inputReader;
     private CharacterController controller;
     [SerializeField] private Animator animator;
@@ -18,7 +19,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update() 
     {
-        Move();    
+        if (canMove)
+        {
+            Move();    
+        }
     }
 
     private void Move()
@@ -34,5 +38,15 @@ public class PlayerMovement : MonoBehaviour
         if (movement == Vector3.zero) {return;}
 
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(movement), 10f * Time.deltaTime);
+    }
+
+    public void ToggleController(bool enable)
+    {
+        controller.enabled = enable;
+    }
+
+    public void ToggleMovement(bool enable)
+    {
+        canMove = enable;
     }
 }
