@@ -34,7 +34,10 @@ public class EnemyLogic : MonoBehaviour
     {
         if (CanSeePlayer())
         {
-            if (!uIManager.IsVisibleUIActive()) {uIManager.ToggleVisibleUI(true);}
+            if (!uIManager.IsVisibleUIActive()) 
+            {
+                Debug.Log("ayaya");
+                uIManager.ToggleVisibleUI(true);}
 
             alertMeter = Mathf.Min(alertMeter + alertIncreaseSpeed * Time.deltaTime, 1f);
             enemyMovement.lastKnownPlayerLocation = player.transform.position;

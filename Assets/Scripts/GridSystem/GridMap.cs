@@ -8,7 +8,8 @@ public class GridMap : MonoBehaviour
 {
     //Get player script
     //Get list of active bots
-    private PlayerMovement player;
+    private PlayerMovement playerMovement;
+    private PlayerTeleport playerTeleport;
     private GameObject[] cameras;
     [SerializeField] private List<Scrambler> scramblers = new List<Scrambler>();
 
@@ -20,6 +21,9 @@ public class GridMap : MonoBehaviour
     private List<GridMapTile> mapTiles = new List<GridMapTile>();
     private GridLayoutGroup layoutGroup;
     private GridPosition activeCameraGridPosition;
+
+    [SerializeField] private GameObject teleportButton;
+    [SerializeField] private GameObject cancelButton;
 
     [SerializeField] private float mapRefreshTime;
     [SerializeField] private float cameraMapViewRange;
@@ -42,7 +46,8 @@ public class GridMap : MonoBehaviour
         layoutGroup = this.gameObject.GetComponent<GridLayoutGroup>();
         layoutGroup.constraintCount = mapWidth;
         layoutGroup.cellSize = new Vector2(mapSize, mapSize);
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
+        playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
+        playerTeleport = playerMovement.GetComponent<PlayerTeleport>();
         cameras = GameObject.FindGameObjectsWithTag("Camera");
         GameObject[] tempScramblers = GameObject.FindGameObjectsWithTag("Scrambler");
         foreach(GameObject scrambler in tempScramblers)
@@ -53,8 +58,10 @@ public class GridMap : MonoBehaviour
         SetScrambledTiles();
 
         Scrambler.scramblerToggled += SetScrambledTiles;
+        GridMapTile.OnTilePressed += DisableTeleportUI;
 
         GenerateMap();
+        ToggleTeleportUI(false);
     }
 
     private void SetScrambledTiles()
@@ -109,7 +116,7 @@ public class GridMap : MonoBehaviour
 
     private IEnumerator UpdateMap()
     {   
-        GridPosition playerPosition = LevelGrid.Instance.GetGridPosition(player.transform.position);
+        GridPosition playerPosition = LevelGrid.Instance.GetGridPosition(playerMovement.transform.position);
         List<GridPosition> cameraPositions = new List<GridPosition>();
         foreach(GameObject camera in cameras)
         {
@@ -124,12 +131,12 @@ public class GridMap : MonoBehaviour
         foreach(GridMapTile tile in mapTiles)
         {
             GridPosition currentGridPosition = tile.GetGridPosition();
-            GridPosition gridDistanceFromActiveCam = currentGridPosition - activeCameraGridPosition;
+
             if (currentGridPosition == playerPosition)
             {
                 tile.SetImage(playerSprite);
             }
-            else if((Mathf.Abs(gridDistanceFromActiveCam.x) + Mathf.Abs(gridDistanceFromActiveCam.z)) > cameraMapViewRange)
+            else if(!TileInViewRange(currentGridPosition))
             {
                 tile.SetImage(unseenSprite);
             }
@@ -158,15 +165,54 @@ public class GridMap : MonoBehaviour
 
     public void ToggleTeleportUI(bool enable)
     {
+        if ((playerTeleport.GetAvailableTeleports() == 0) && enable)
+        {
+            return;
+        }
+
+        teleportButton.SetActive(!enable);
+        cancelButton.SetActive(enable);
+        playerMovement.ToggleMovement(!enable);
+
         if (enable)
         {
             foreach(GridMapTile tile in mapTiles)
             {
                 GridPosition currentGridPosition = tile.GetGridPosition();
-                //test to see if tile is in teleport range, is walkable and valid, isn't scrambled. If yes then enable the button.
-                //Also change teleport button to be cancel button instead
+                GridPosition playerPosition = LevelGrid.Instance.GetGridPosition(playerMovement.transform.position);
+                GridPosition tileDistanceFromPlayerPosition = currentGridPosition - playerPosition;
+                if ((currentGridPosition == playerPosition) 
+                    || !TileInViewRange(currentGridPosition)
+                    || ((Mathf.Abs(tileDistanceFromPlayerPosition.x) + Mathf.Abs(tileDistanceFromPlayerPosition.z)) > playerTeleport.GetTeleportRange()) 
+                    || !LevelGrid.Instance.IsValidGridPosition(currentGridPosition) 
+                    || LevelGrid.Instance.GetGridObject(currentGridPosition).IsScrambled())
+                {
+                    continue;
+                }
+                else 
+                {
+                    tile.ToggleButton(true);
+                }
             }
         }
+        else
+        {
+            foreach(GridMapTile tile in mapTiles)
+            {
+                tile.ToggleButton(false);
+            }
+        }
+    }
+
+    private bool TileInViewRange(GridPosition gridPosition)
+    {
+        GridPosition gridDistanceFromActiveCam = gridPosition - activeCameraGridPosition;
+        return ((Mathf.Abs(gridDistanceFromActiveCam.x) + Mathf.Abs(gridDistanceFromActiveCam.z)) <= cameraMapViewRange);
+    }
+
+    private void DisableTeleportUI(object sender, GridPosition e)
+    {
+        ToggleTeleportUI(false);
     }
 
     private void OnDestroy() 

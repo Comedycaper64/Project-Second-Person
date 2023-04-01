@@ -73,6 +73,14 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
+    public void StunEnemy()
+    {
+        if (!disabled)
+        {
+            StartCoroutine(DisableMovement());
+        }
+    }
+
     private void DisableEnemy()
     {
         if (cameraObject.IsCameraActive() && !disabled && AbilityCooldowns.Instance.CanDisable())

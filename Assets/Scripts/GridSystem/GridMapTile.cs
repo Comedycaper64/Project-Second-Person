@@ -15,7 +15,13 @@ public class GridMapTile : MonoBehaviour
     private void Awake() 
     {
         tileImage = GetComponent<Image>();    
-        tileButton.interactable = false;
+        tileButton = GetComponent<Button>();
+        ToggleButton(false);
+    }
+
+    public void ToggleButton(bool enable)
+    {
+        tileButton.interactable = enable;
     }
 
     public GridPosition GetGridPosition()
