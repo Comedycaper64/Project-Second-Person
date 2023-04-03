@@ -13,6 +13,7 @@ public class PlayerTeleport : MonoBehaviour
     private void Awake() 
     {
         availableTeleports = totalTeleports;    
+        UIManager.Instance.SetTeleportText(availableTeleports);
         movement = GetComponent<PlayerMovement>();
         GridMapTile.OnTilePressed += Teleport;
     }
@@ -29,7 +30,9 @@ public class PlayerTeleport : MonoBehaviour
 
     public void Teleport(object sender, GridPosition gridPosition)
     {
+        //If first teleport, enable level timer
         availableTeleports--;
+        UIManager.Instance.SetTeleportText(availableTeleports);
         movement.ToggleController(false);
         transform.position = LevelGrid.Instance.GetCellCentre(gridPosition);
         movement.ToggleController(true);

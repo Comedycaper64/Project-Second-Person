@@ -6,10 +6,12 @@ public class PlayerHealth : MonoBehaviour
 {
     [SerializeField] private int maxHealth;
     private int health;
+    private PlayerMovement playerMovement;
 
     private void Awake() 
     {
-        health = maxHealth;    
+        health = maxHealth; 
+        playerMovement = GetComponent<PlayerMovement>();
     }
 
     private void OnTriggerEnter(Collider other) 
@@ -20,7 +22,8 @@ public class PlayerHealth : MonoBehaviour
             movement.StunEnemy();
             if (health <= 0)
             {
-                Debug.Log("You are dead");
+                playerMovement.ToggleMovement(false);
+                UIManager.Instance.ToggleDeathUI(true);
             }
         }    
     }

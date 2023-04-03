@@ -9,6 +9,7 @@ public class EnemyLogic : MonoBehaviour
     [SerializeField] private Transform cameraLocation;
     private EnemyMovement enemyMovement;
     public bool alerted = false;
+    private bool canSeePlayer;
     private UIManager uIManager;
     [Range(0,1)] private float alertMeter = 0;
     [SerializeField] private float alertIncreaseSpeed;
@@ -34,14 +35,10 @@ public class EnemyLogic : MonoBehaviour
     {
         if (CanSeePlayer())
         {
-            if (!uIManager.IsVisibleUIActive()) 
-            {
-                Debug.Log("ayaya");
-                uIManager.ToggleVisibleUI(true);}
-
             alertMeter = Mathf.Min(alertMeter + alertIncreaseSpeed * Time.deltaTime, 1f);
             enemyMovement.lastKnownPlayerLocation = player.transform.position;
             enemyMovement.canSeePlayer = true;
+            canSeePlayer = true;
             if ((alertMeter == 1) && !alerted)
             {
                 alerted = true;
@@ -51,10 +48,9 @@ public class EnemyLogic : MonoBehaviour
         }
         else
         {
-            if (uIManager.IsVisibleUIActive()) {uIManager.ToggleVisibleUI(false);}
-
             alertMeter = Mathf.Max(alertMeter - alertDecreaseSpeed * Time.deltaTime, 0f);
             enemyMovement.canSeePlayer = false;
+            canSeePlayer = false;
             if ((alertMeter == 0) && alerted)
             {
                 alerted = false;
@@ -85,5 +81,10 @@ public class EnemyLogic : MonoBehaviour
         }
 
         return false;
+    }
+
+    public bool GetCanSeePlayer()
+    {
+        return canSeePlayer;
     }
 }
