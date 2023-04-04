@@ -9,12 +9,15 @@ public class Scrambler : MonoBehaviour
     private bool playerInRange;
     public int scramblerRange;
     public GridPosition scramblerPosition;
+    [SerializeField] private GameObject scramblerVisual;
 
     public static Action scramblerToggled;
 
     private void Start() 
     {
-        scramblerPosition = LevelGrid.Instance.GetGridPosition(transform.position);    
+        scramblerPosition = LevelGrid.Instance.GetGridPosition(transform.position);   
+        int tempRange = scramblerRange * 4; 
+        scramblerVisual.transform.localScale = new Vector3(tempRange, tempRange, tempRange);
     }
 
     private void Update() 
@@ -28,6 +31,7 @@ public class Scrambler : MonoBehaviour
     public void ToggleScrambler(bool enable)
     {
         scramblerEnabled = enable;
+        scramblerVisual.SetActive(enable);
         scramblerToggled?.Invoke();
     }
 

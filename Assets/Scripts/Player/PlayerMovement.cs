@@ -10,11 +10,13 @@ public class PlayerMovement : MonoBehaviour
     private CharacterController controller;
     [SerializeField] private Animator animator;
     [SerializeField] private float playerSpeed;
+    [SerializeField] private PlayerHealth playerHealth;
 
     private void Awake() 
     {
         inputReader = GetComponent<InputReader>();
         controller = GetComponent<CharacterController>();
+        playerHealth.OnDeath += DisableMovement;
     }
 
     private void Update() 
@@ -48,5 +50,15 @@ public class PlayerMovement : MonoBehaviour
     public void ToggleMovement(bool enable)
     {
         canMove = enable;
+    }
+
+    private void DisableMovement()
+    {
+        ToggleMovement(false);
+    }
+
+    private void OnDisable() 
+    {
+        playerHealth.OnDeath -= DisableMovement;
     }
 }
