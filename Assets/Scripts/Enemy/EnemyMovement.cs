@@ -9,7 +9,8 @@ public class EnemyMovement : MonoBehaviour
     private AIPath aIPath;
     private InputReader inputReader;
     [SerializeField] private CameraObject cameraObject;
-    [SerializeField] private List<Transform> patrolRoute = new List<Transform>();
+    [SerializeField] private GameObject patrolObject;
+    private Transform[] patrolRoute;
     private int patrolIndex = 0;
     private bool reversingThroughPatrol = false;
     private bool waiting = false;
@@ -26,6 +27,8 @@ public class EnemyMovement : MonoBehaviour
 
     private void Awake() 
     {
+        patrolObject.transform.SetParent(null);
+        patrolRoute = patrolObject.GetComponentsInChildren<Transform>();
         aIPath = GetComponent<AIPath>();
         SetMovePosition(patrolRoute[patrolIndex].position);    
         inputReader = GameObject.FindGameObjectWithTag("Player").GetComponent<InputReader>();
@@ -105,7 +108,7 @@ public class EnemyMovement : MonoBehaviour
 
         yield return new WaitForSeconds(patrolWaitTime);
 
-        if (patrolIndex == (patrolRoute.Count - 1))
+        if (patrolIndex == (patrolRoute.Length - 1))
         {
             reversingThroughPatrol = true;
         }

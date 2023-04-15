@@ -7,6 +7,7 @@ public class CameraController : MonoBehaviour
 {
     private InputReader inputReader;
     private List<CameraObject> cameraObjects = new List<CameraObject>();
+    [SerializeField] private CameraObject startCamera;
     [SerializeField] private CameraObject enabledCamera;
     private int raycastLayermask;
 
@@ -24,6 +25,19 @@ public class CameraController : MonoBehaviour
 
         inputReader = GameObject.FindGameObjectWithTag("Player").GetComponent<InputReader>();
         inputReader.SwitchCameraEvent += OnSwitchCamera;
+        SwitchOffAllCameras();
+        EnableStartCamera();
+    }
+
+    private void OnDestroy() 
+    {
+        inputReader.SwitchCameraEvent -= OnSwitchCamera;
+    }
+
+    private void EnableStartCamera()
+    {
+        enabledCamera = startCamera;
+        enabledCamera.EnableCamera(true);
     }
 
     private void OnSwitchCamera(object sender, Ray ray)
@@ -40,11 +54,11 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    // private void SwitchOffAllCameras()
-    // {
-    //     foreach(CameraObject camera in cameraObjects)
-    //     {
-    //         camera.EnableCamera(false);
-    //     }
-    // }
+    private void SwitchOffAllCameras()
+    {
+        foreach(CameraObject camera in cameraObjects)
+        {
+            camera.EnableCamera(false);
+        }
+    }
 }

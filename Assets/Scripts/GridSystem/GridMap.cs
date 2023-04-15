@@ -6,8 +6,6 @@ using UnityEngine.UI;
 
 public class GridMap : MonoBehaviour
 {
-    //Get player script
-    //Get list of active bots
     private PlayerMovement playerMovement;
     private PlayerTeleport playerTeleport;
     private GameObject[] cameras;

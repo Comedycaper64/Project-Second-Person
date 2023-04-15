@@ -13,7 +13,7 @@ public class Scrambler : MonoBehaviour
 
     public static Action scramblerToggled;
 
-    private void Start() 
+    private void Awake() 
     {
         scramblerPosition = LevelGrid.Instance.GetGridPosition(transform.position);   
         int tempRange = scramblerRange * 4; 

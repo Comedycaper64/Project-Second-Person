@@ -35,7 +35,7 @@ public class LevelGrid : MonoBehaviour
                 GetGridObject(gridPosition).SetIsWalkable(gridSystem.CheckIfTileExists(gridPosition));
             }
         }
-        gridSystem.CreateDebugObjects(gridDebugObjectPrefab);
+        //gridSystem.CreateDebugObjects(gridDebugObjectPrefab);
     }
 
     //This script is basically for other classes to interact with the GridSystem and to see/manage which tiles units are on

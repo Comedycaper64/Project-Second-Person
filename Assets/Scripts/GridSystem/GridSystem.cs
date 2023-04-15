@@ -64,7 +64,7 @@ public class GridSystem
 
     public bool CheckIfTileExists(GridPosition gridPosition)
     {
-        float tileCheckRadius = .5f;
+        float tileCheckRadius = 0.75f;
         Collider[] colliderArray = Physics.OverlapSphere(GetCellCenter(gridPosition), tileCheckRadius);
         foreach (Collider collider in colliderArray)
         {
