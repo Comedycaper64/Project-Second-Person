@@ -18,12 +18,21 @@ public class UIManager : MonoBehaviour
         Instance = this;    
         ToggleDeathUI(false);
         enemiesObject = GameObject.FindGameObjectWithTag("Enemies");
-        enemyLogics = enemiesObject.GetComponentsInChildren<EnemyLogic>();
+        if (enemiesObject)
+        {
+            enemyLogics = enemiesObject.GetComponentsInChildren<EnemyLogic>();
+        }   
+        else
+        {
+            enemyLogics = new EnemyLogic[0];
+        }
     }
 
     private void Update() 
     {
         bool canSeePlayerThisFrame = false;
+        if (enemyLogics.Length == 0) {return;}
+
         foreach(EnemyLogic logic in enemyLogics)
         {
             if(logic.GetCanSeePlayer())

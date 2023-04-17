@@ -6,6 +6,7 @@ using UnityEngine;
 public class CameraObject : MonoBehaviour
 {
     [SerializeField] private GameObject virtualCamera; 
+    [SerializeField] private GameObject cameraModel; 
     [SerializeField] private bool autoRotate = true;
     [SerializeField] private float turnAmount = 20f;
     [SerializeField] private float turnSpeed = 0.4f;
@@ -15,7 +16,10 @@ public class CameraObject : MonoBehaviour
 
     private void Awake() 
     {
-        startYRotation = virtualCamera.transform.rotation.eulerAngles.y;    
+        if (autoRotate)
+        {
+            startYRotation = cameraModel.transform.rotation.eulerAngles.y; 
+        }   
     }
 
     private void Update() 
@@ -25,15 +29,15 @@ public class CameraObject : MonoBehaviour
         Vector3 targetRotation;
         if (!reverseTurn)
         {
-            targetRotation = new Vector3(virtualCamera.transform.eulerAngles.x, startYRotation + turnAmount, virtualCamera.transform.eulerAngles.z);       
+            targetRotation = new Vector3(cameraModel.transform.eulerAngles.x, startYRotation + turnAmount, cameraModel.transform.eulerAngles.z);       
         }
         else
         {
-            targetRotation = new Vector3(virtualCamera.transform.eulerAngles.x, startYRotation - turnAmount, virtualCamera.transform.eulerAngles.z);
+            targetRotation = new Vector3(cameraModel.transform.eulerAngles.x, startYRotation - turnAmount, cameraModel.transform.eulerAngles.z);
         }
-        virtualCamera.transform.rotation = Quaternion.Lerp(virtualCamera.transform.rotation, Quaternion.Euler(targetRotation), turnSpeed * Time.deltaTime);
+        cameraModel.transform.rotation = Quaternion.Lerp(cameraModel.transform.rotation, Quaternion.Euler(targetRotation), turnSpeed * Time.deltaTime);
 
-        if ((virtualCamera.transform.eulerAngles - targetRotation).magnitude < 5f)
+        if ((cameraModel.transform.eulerAngles - targetRotation).magnitude < 5f)
         {
             reverseTurn = !reverseTurn;
         }
