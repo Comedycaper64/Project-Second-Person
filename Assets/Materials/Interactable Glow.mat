@@ -61,6 +61,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _GatherTexture2D_727bab7d9fc24167bbee1da9eae2f382_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 3805f390b2c863e4dae48baefceb5073, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -130,6 +134,6 @@ Material:
     - _Base_Colour: {r: 0.33962256, g: 0.33962256, b: 0.33962256, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Fresnel_Colour: {r: 1, g: 0.8960531, b: 0, a: 0}
+    - _Fresnel_Colour: {r: 0.20441794, g: 0.4716981, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []

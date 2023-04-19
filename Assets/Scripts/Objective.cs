@@ -9,6 +9,7 @@ public class Objective : MonoBehaviour
         if (other.GetComponent<PlayerMovement>())
         {
             LevelManager.Instance.SetObjectiveObtained(true);
+            LevelManager.Instance.EnableTimer();
             Destroy(gameObject);
         }    
     }

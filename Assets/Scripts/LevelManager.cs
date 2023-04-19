@@ -6,13 +6,36 @@ using UnityEngine.SceneManagement;
 public class LevelManager : MonoBehaviour
 {
     public static LevelManager Instance;
-
     private bool objectiveObtained = false;
+
+    [SerializeField] private float levelTimer = 20f;
+    private float currentTimer;
+    private bool timerEnabled = false;
 
     private void Awake() 
     {
         Instance = this;    
         SetObjectiveObtained(false);
+        currentTimer = levelTimer;
+    }
+
+    private void Update() 
+    {
+        if (timerEnabled)
+        {
+            currentTimer -= Time.deltaTime;
+            UIManager.Instance.UpdateTimerText(currentTimer);
+            if (currentTimer <= 0)
+            {
+                //End level / alert all facility
+            }
+        }    
+    }
+
+    public void EnableTimer()
+    {
+        timerEnabled = true;
+        UIManager.Instance.ToggleTimerUI(true);
     }
 
     public void LoadMainMenu()

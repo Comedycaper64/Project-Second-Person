@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject visibleText;
     [SerializeField] private GameObject alertedText;
     [SerializeField] private TextMeshProUGUI teleportText;
+    [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private GameObject deathUI;
     private GameObject enemiesObject;
     private EnemyLogic[] enemyLogics;
@@ -61,6 +62,16 @@ public class UIManager : MonoBehaviour
     public void ToggleDeathUI(bool enable)
     {
         deathUI.SetActive(enable);
+    }
+
+    public void ToggleTimerUI(bool enable)
+    {
+        timerText.gameObject.SetActive(enable);
+    }
+
+    public void UpdateTimerText(float newTime)
+    {
+        timerText.text = newTime.ToString("#.##");
     }
     
     public void ResetLevel()
