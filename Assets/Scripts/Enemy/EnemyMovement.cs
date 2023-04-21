@@ -10,6 +10,7 @@ public class EnemyMovement : MonoBehaviour
     private InputReader inputReader;
     [SerializeField] private CameraObject cameraObject;
     [SerializeField] private GameObject patrolObject;
+    [SerializeField] private Animator animator;
     private Transform[] patrolRoute;
     private int patrolIndex = 0;
     private bool reversingThroughPatrol = false;
@@ -24,6 +25,7 @@ public class EnemyMovement : MonoBehaviour
     private Transform playerTransform;
     public Vector3 lastKnownPlayerLocation;
     public bool canSeePlayer;
+    [SerializeField] private AudioClip enemyStunSFX;
 
     private void Awake() 
     {
@@ -62,6 +64,14 @@ public class EnemyMovement : MonoBehaviour
                 }   
             }
         }
+        if (waiting || disabled)
+        {
+            animator.SetFloat("Speed", 0f);
+        }
+        else
+        {
+            animator.SetFloat("Speed", 1f);
+        }
     }
 
     public bool CheckDestinationReached()
@@ -94,6 +104,10 @@ public class EnemyMovement : MonoBehaviour
 
     private IEnumerator DisableMovement()
     {
+        if (SoundManager.Instance)
+        {
+            AudioSource.PlayClipAtPoint(enemyStunSFX, transform.position, SoundManager.Instance.GetSoundEffectVolume());
+        }
         AbilityCooldowns.Instance.SetDisableCooldown();
         disabled = true;
         ToggleMovement(false);

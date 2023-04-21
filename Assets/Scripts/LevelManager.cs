@@ -27,6 +27,7 @@ public class LevelManager : MonoBehaviour
             UIManager.Instance.UpdateTimerText(currentTimer);
             if (currentTimer <= 0)
             {
+                timerEnabled = false;
                 //End level / alert all facility
             }
         }    

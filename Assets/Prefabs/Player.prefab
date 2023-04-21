@@ -111,7 +111,7 @@ Transform:
   - {fileID: 9038405426865589079}
   - {fileID: 8855313423535600420}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8855313423970163327
 MonoBehaviour:
@@ -125,6 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e585964de5dd8904aa32957d7cfea0c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canMove: 1
   animator: {fileID: 3138711031165260077}
   playerSpeed: 5
   playerHealth: {fileID: 8855313423535600423}
@@ -142,6 +143,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   totalTeleports: 2
   teleportRange: 5
+  teleportSFX: {fileID: 8300000, guid: 1dfe435784cba704982a915f18e5a8c3, type: 3}
 --- !u!114 &8855313423970163326
 MonoBehaviour:
   m_ObjectHideFlags: 0

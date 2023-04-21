@@ -13,6 +13,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject deathUI;
     private GameObject enemiesObject;
     private EnemyLogic[] enemyLogics;
+    [SerializeField] private AudioClip enemyAlertedSFX;
+    [SerializeField] private AudioClip enemySeenSFX;
 
     private void Awake() 
     {
@@ -46,6 +48,10 @@ public class UIManager : MonoBehaviour
 
     public void ToggleVisibleUI(bool enable)
     {
+        if (enable && SoundManager.Instance && !IsVisibleUIActive())
+        {
+            AudioSource.PlayClipAtPoint(enemySeenSFX, Camera.main.transform.position, SoundManager.Instance.GetSoundEffectVolume());
+        }
         visibleText.SetActive(enable);
     }
 
@@ -57,6 +63,10 @@ public class UIManager : MonoBehaviour
     public void ToggleAlertedUI(bool enable)
     {
         alertedText.SetActive(enable);
+        if (enable && SoundManager.Instance)
+        {
+            AudioSource.PlayClipAtPoint(enemyAlertedSFX, Camera.main.transform.position, SoundManager.Instance.GetSoundEffectVolume());
+        }
     }
 
     public void ToggleDeathUI(bool enable)

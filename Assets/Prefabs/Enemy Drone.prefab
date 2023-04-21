@@ -259,6 +259,7 @@ MonoBehaviour:
   disabledTime: 2
   lastKnownPlayerLocation: {x: 0, y: 0, z: 0}
   canSeePlayer: 0
+  enemyStunSFX: {fileID: 8300000, guid: 29004c065a7556349b305b0fe9fd1d34, type: 3}
 --- !u!114 &8213084795744771737
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -359,6 +360,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   virtualCamera: {fileID: 8213084794134534292}
+  cameraModel: {fileID: 0}
   autoRotate: 0
   turnAmount: 20
   turnSpeed: 0.4

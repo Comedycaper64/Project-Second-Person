@@ -1429,6 +1429,8 @@ MonoBehaviour:
   teleportText: {fileID: 874536079325571925}
   timerText: {fileID: 1808149690729758630}
   deathUI: {fileID: 874536079383116213}
+  enemyAlertedSFX: {fileID: 8300000, guid: 04bc4c2d1e5094c4897342a83e9b18d4, type: 3}
+  enemySeenSFX: {fileID: 8300000, guid: 26dfec782a1c5dd448e98ec1a46f3f1c, type: 3}
 --- !u!1 &874536079985533129
 GameObject:
   m_ObjectHideFlags: 0

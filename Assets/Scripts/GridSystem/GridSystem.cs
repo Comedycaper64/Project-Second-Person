@@ -73,7 +73,14 @@ public class GridSystem
                 return false;
             }
         }
-        return true;
+        foreach (Collider collider in colliderArray)
+        {
+            if (collider.gameObject.layer == 8)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public bool IsWithinGrid(GridPosition gridPosition)

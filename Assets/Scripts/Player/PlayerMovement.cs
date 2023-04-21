@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private bool canMove = true;
+    public bool canMove = true;
     private InputReader inputReader;
     private CharacterController controller;
     [SerializeField] private Animator animator;

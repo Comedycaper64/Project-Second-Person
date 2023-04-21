@@ -8,6 +8,7 @@ public class PlayerTeleport : MonoBehaviour
     [SerializeField] private int teleportRange;
     private int availableTeleports;
     private PlayerMovement movement;
+    [SerializeField] private AudioClip teleportSFX;
 
 
     private void Awake() 
@@ -36,6 +37,15 @@ public class PlayerTeleport : MonoBehaviour
         transform.position = LevelGrid.Instance.GetCellCentre(gridPosition);
         movement.ToggleController(true);
         movement.ToggleMovement(true);
+        if (SoundManager.Instance)
+        {
+            AudioSource.PlayClipAtPoint(teleportSFX, transform.position, SoundManager.Instance.GetSoundEffectVolume());
+        }
         LevelManager.Instance.EnableTimer();
+    }
+
+    private void OnDisable() 
+    {
+        GridMapTile.OnTilePressed -= Teleport;
     }
 }

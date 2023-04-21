@@ -163,7 +163,7 @@ public class GridMap : MonoBehaviour
 
     public void ToggleTeleportUI(bool enable)
     {
-        if ((playerTeleport.GetAvailableTeleports() == 0) && enable)
+        if (((playerTeleport.GetAvailableTeleports() == 0) || (!playerTeleport.gameObject.activeInHierarchy)) && enable)
         {
             return;
         }

@@ -10,6 +10,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] private CameraObject startCamera;
     [SerializeField] private CameraObject enabledCamera;
     private int raycastLayermask;
+    [SerializeField] private AudioClip cameraSwitchSFX;
 
     private void Start() 
     {
@@ -50,6 +51,10 @@ public class CameraController : MonoBehaviour
                 enabledCamera.EnableCamera(false);
                 enabledCamera = cameraObject;
                 enabledCamera.EnableCamera(true);
+                if (SoundManager.Instance)
+                {
+                    AudioSource.PlayClipAtPoint(cameraSwitchSFX, enabledCamera.transform.position, SoundManager.Instance.GetSoundEffectVolume());
+                }
             }
         }
     }

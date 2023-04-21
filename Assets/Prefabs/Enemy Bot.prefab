@@ -315,6 +315,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraObject: {fileID: 3196604453803195326}
   patrolObject: {fileID: 832576867}
+  animator: {fileID: 9022411521062819769}
   patrolling: 1
   patrolSpeed: 2
   chaseSpeed: 5
@@ -323,6 +324,7 @@ MonoBehaviour:
   disabledTime: 2
   lastKnownPlayerLocation: {x: 0, y: 0, z: 0}
   canSeePlayer: 0
+  enemyStunSFX: {fileID: 8300000, guid: 29004c065a7556349b305b0fe9fd1d34, type: 3}
 --- !u!114 &3196604453803195327
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -437,6 +439,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   virtualCamera: {fileID: 3196604451921492340}
+  cameraModel: {fileID: 0}
   autoRotate: 0
   turnAmount: 20
   turnSpeed: 0.4
@@ -524,6 +527,12 @@ PrefabInstance:
 --- !u!4 &3158755813823778243 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1dc6dfc768492204899fc6e68f16ad50,
+    type: 3}
+  m_PrefabInstance: {fileID: 3196604452682852904}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &9022411521062819769 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 1dc6dfc768492204899fc6e68f16ad50,
     type: 3}
   m_PrefabInstance: {fileID: 3196604452682852904}
   m_PrefabAsset: {fileID: 0}

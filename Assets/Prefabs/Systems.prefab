@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01a542d146512b146a2859c7e71871d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelTimer: 20
 --- !u!1 &8911579586704334390
 GameObject:
   m_ObjectHideFlags: 0
@@ -90,6 +91,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startCamera: {fileID: 0}
   enabledCamera: {fileID: 0}
+  cameraSwitchSFX: {fileID: 8300000, guid: b16bdd895fafe0d4fabbac309ed4495d, type: 3}
 --- !u!1 &8911579587378827593
 GameObject:
   m_ObjectHideFlags: 0
@@ -292,7 +294,7 @@ Transform:
   - {fileID: 8911579587391153948}
   - {fileID: 8911579586206587922}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8911579587727869591
 MonoBehaviour:

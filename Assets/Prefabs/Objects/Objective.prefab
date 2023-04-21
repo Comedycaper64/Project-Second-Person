@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a1e9214838748544b63caabf61631fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  objectiveGetSFX: {fileID: 8300000, guid: d8211a37608e5544ba072b1acf155609, type: 3}
 --- !u!135 &7322279555108832113
 SphereCollider:
   m_ObjectHideFlags: 0
