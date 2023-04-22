@@ -10,6 +10,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject alertedText;
     [SerializeField] private TextMeshProUGUI teleportText;
     [SerializeField] private TextMeshProUGUI timerText;
+    [SerializeField] private TextMeshProUGUI hideText;
+    [SerializeField] private TextMeshProUGUI disableText;
     [SerializeField] private GameObject deathUI;
     private GameObject enemiesObject;
     private EnemyLogic[] enemyLogics;
@@ -77,6 +79,24 @@ public class UIManager : MonoBehaviour
     public void ToggleTimerUI(bool enable)
     {
         timerText.gameObject.SetActive(enable);
+    }
+
+    public void ToggleHideUI(bool enable, bool hide)
+    {
+        if (hide)
+        {
+            hideText.text = "Hide [Spacebar]";
+        }
+        else
+        {
+            hideText.text = "Exit [Spacebar]";
+        }
+        hideText.gameObject.SetActive(enable);
+    }
+
+    public void ToggleInteractUI(bool enable)
+    {
+        disableText.gameObject.SetActive(enable);
     }
 
     public void UpdateTimerText(float newTime)

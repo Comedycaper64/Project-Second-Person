@@ -21,6 +21,7 @@ public class HidingPlace : MonoBehaviour
         if (other.gameObject.GetComponent<PlayerMovement>())
         {
             player = other.gameObject;
+            UIManager.Instance.ToggleHideUI(true, true);
         }
 
         if (other.gameObject.TryGetComponent<EnemyLogic>(out EnemyLogic enemyLogic))
@@ -38,6 +39,7 @@ public class HidingPlace : MonoBehaviour
         if (other.gameObject.GetComponent<PlayerMovement>())
         {
             player = null;
+            UIManager.Instance.ToggleHideUI(false, true);
         }
 
         if (other.gameObject.TryGetComponent<EnemyLogic>(out EnemyLogic enemyLogic))
@@ -52,5 +54,13 @@ public class HidingPlace : MonoBehaviour
 
         player.SetActive(!enable);
         playerHidden = enable;
+        if (enable)
+        {
+            UIManager.Instance.ToggleHideUI(true, false);
+        }
+        else
+        {
+            UIManager.Instance.ToggleHideUI(true, true);
+        }
     }
 }

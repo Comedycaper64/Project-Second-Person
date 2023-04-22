@@ -38,7 +38,7 @@ public class GridMap : MonoBehaviour
     {
         mapWidth = LevelGrid.Instance.GetWidth();
         mapHeight = LevelGrid.Instance.GetHeight();
-        mapTileScale = 20f / mapWidth;
+        mapTileScale = 15f / mapWidth;
         mapSize = 40f - mapWidth;
         mapContainer = this.gameObject.transform;
         layoutGroup = this.gameObject.GetComponent<GridLayoutGroup>();

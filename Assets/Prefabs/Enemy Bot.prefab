@@ -281,7 +281,7 @@ Transform:
   - {fileID: 3196604451921492341}
   - {fileID: 832576868}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!143 &3196604453803195320
 CharacterController:
@@ -337,7 +337,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a86ed79a81ed51b42a3eb17e8ce46a91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraLocation: {fileID: 3196604451921492341}
+  cameraLocation: {fileID: 0}
   alerted: 0
   alertIncreaseSpeed: 0.5
   alertDecreaseSpeed: 0.1

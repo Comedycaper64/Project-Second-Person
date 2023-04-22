@@ -40,6 +40,7 @@ public class Scrambler : MonoBehaviour
         if (other.GetComponent<PlayerMovement>())
         {
             playerInRange = true;
+            UIManager.Instance.ToggleInteractUI(true);
         }    
     }
 
@@ -48,6 +49,7 @@ public class Scrambler : MonoBehaviour
         if (other.GetComponent<PlayerMovement>())
         {
             playerInRange = false;
+            UIManager.Instance.ToggleInteractUI(false);
         } 
     }
 }

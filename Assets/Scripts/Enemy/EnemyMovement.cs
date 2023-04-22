@@ -64,6 +64,9 @@ public class EnemyMovement : MonoBehaviour
                 }   
             }
         }
+
+        if (!animator) {return;}
+
         if (waiting || disabled)
         {
             animator.SetFloat("Speed", 0f);
