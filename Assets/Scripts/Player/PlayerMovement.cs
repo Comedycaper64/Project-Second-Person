@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
         inputReader = GetComponent<InputReader>();
         controller = GetComponent<CharacterController>();
         playerHealth.OnDeath += DisableMovement;
+        LevelManager.Instance.OnTimerEnd += DisableMovement;
     }
 
     private void Update() 
@@ -60,5 +61,6 @@ public class PlayerMovement : MonoBehaviour
     private void OnDisable() 
     {
         playerHealth.OnDeath -= DisableMovement;
+        LevelManager.Instance.OnTimerEnd -= DisableMovement;
     }
 }

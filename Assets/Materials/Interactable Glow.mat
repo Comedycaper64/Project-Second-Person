@@ -131,7 +131,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Base_Colour: {r: 0.33962256, g: 0.33962256, b: 0.33962256, a: 0}
+    - _Base_Colour: {r: 0.6981132, g: 0.32600567, b: 0.32600567, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Fresnel_Colour: {r: 0.20441794, g: 0.4716981, b: 0, a: 0}

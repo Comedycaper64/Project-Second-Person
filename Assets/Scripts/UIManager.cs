@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI hideText;
     [SerializeField] private TextMeshProUGUI disableText;
     [SerializeField] private GameObject deathUI;
+    [SerializeField] private GameObject gameBeatUI;
     private GameObject enemiesObject;
     private EnemyLogic[] enemyLogics;
     [SerializeField] private AudioClip enemyAlertedSFX;
@@ -55,6 +56,11 @@ public class UIManager : MonoBehaviour
             AudioSource.PlayClipAtPoint(enemySeenSFX, Camera.main.transform.position, SoundManager.Instance.GetSoundEffectVolume());
         }
         visibleText.SetActive(enable);
+    }
+
+    public void ToggleGameBeatUI()
+    {
+        gameBeatUI.SetActive(true);
     }
 
     public bool IsVisibleUIActive()
@@ -103,7 +109,12 @@ public class UIManager : MonoBehaviour
     {
         timerText.text = newTime.ToString("#.##");
     }
-    
+
+    public void CloseGame()
+    {
+        Application.Quit();
+    }
+
     public void ResetLevel()
     {
         LevelManager.Instance.ReloadLevel();

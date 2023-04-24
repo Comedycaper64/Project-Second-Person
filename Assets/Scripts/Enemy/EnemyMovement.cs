@@ -119,6 +119,11 @@ public class EnemyMovement : MonoBehaviour
         disabled = false;
     }
 
+    public bool IsDisabled()
+    {
+        return disabled;
+    }
+
     private IEnumerator UpdatePatrol()
     {
         waiting = true;

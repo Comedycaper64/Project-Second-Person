@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d259b3be69b37cc44ad59b2643dd547f, type: 3}
   m_Name: Camera Blit
   m_EditorClassIdentifier: 
-  m_Active: 0
+  m_Active: 1
   settings:
     Event: 500
     blitMaterial: {fileID: 2100000, guid: 6f13df6e989e4a1468d3305aba8ac1d3, type: 2}

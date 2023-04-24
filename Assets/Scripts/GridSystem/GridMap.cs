@@ -59,7 +59,7 @@ public class GridMap : MonoBehaviour
         GridMapTile.OnTilePressed += DisableTeleportUI;
 
         GenerateMap();
-        ToggleTeleportUI(false);
+        DisableMapTiles();
     }
 
     private void SetScrambledTiles()
@@ -195,10 +195,15 @@ public class GridMap : MonoBehaviour
         }
         else
         {
-            foreach(GridMapTile tile in mapTiles)
-            {
-                tile.ToggleButton(false);
-            }
+            DisableMapTiles();
+        }   
+    }
+
+    private void DisableMapTiles()
+    {
+        foreach(GridMapTile tile in mapTiles)
+        {
+            tile.ToggleButton(false);
         }
     }
 
@@ -215,7 +220,9 @@ public class GridMap : MonoBehaviour
 
     private void OnDestroy() 
     {
-        Scrambler.scramblerToggled -= SetScrambledTiles;   
+        Scrambler.scramblerToggled -= SetScrambledTiles; 
+        GridMapTile.OnTilePressed -= DisableTeleportUI;
+  
     }
 
     private void ClearMapContainer()

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private float levelTimer = 20f;
     private float currentTimer;
     private bool timerEnabled = false;
+    public event Action OnTimerEnd;
 
     private void Awake() 
     {
@@ -28,7 +30,8 @@ public class LevelManager : MonoBehaviour
             if (currentTimer <= 0)
             {
                 timerEnabled = false;
-                //End level / alert all facility
+                OnTimerEnd?.Invoke();
+                UIManager.Instance.ToggleDeathUI(true);
             }
         }    
     }
@@ -52,6 +55,11 @@ public class LevelManager : MonoBehaviour
     public void ReloadLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public int GetLevel()
+    {
+        return SceneManager.GetActiveScene().buildIndex;
     }
 
     public void LoadNextLevel()

@@ -253,9 +253,9 @@ MonoBehaviour:
   patrolObject: {fileID: 8213084794779045219}
   animator: {fileID: 0}
   patrolling: 1
-  patrolSpeed: 2
-  chaseSpeed: 3
-  patrolWaitTime: 1
+  patrolSpeed: 7
+  chaseSpeed: 7
+  patrolWaitTime: 0.1
   rotateSpeed: 100
   disabledTime: 2
   lastKnownPlayerLocation: {x: 0, y: 0, z: 0}
@@ -273,7 +273,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a86ed79a81ed51b42a3eb17e8ce46a91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraLocation: {fileID: 8213084794134534315}
+  cameraLocation: {fileID: 0}
   alerted: 0
   alertIncreaseSpeed: 0.5
   alertDecreaseSpeed: 0.1
@@ -322,7 +322,7 @@ MonoBehaviour:
   radius: 0.5
   height: 2
   canMove: 1
-  maxSpeed: 2
+  maxSpeed: 5
   gravity: {x: 0, y: 0, z: 0}
   groundMask:
     serializedVersion: 2
@@ -407,8 +407,13 @@ PrefabInstance:
     - target: {fileID: 281809824191621155, guid: b8b3d10741b983240b42f5d5614767a2,
         type: 3}
       propertyPath: m_Materials.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 281809824191621155, guid: b8b3d10741b983240b42f5d5614767a2,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 87cd9798083950d49bdc5738dd27946a, type: 2}
     - target: {fileID: 281809824191621155, guid: b8b3d10741b983240b42f5d5614767a2,
         type: 3}
       propertyPath: m_Materials.Array.data[1]

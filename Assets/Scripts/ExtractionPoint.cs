@@ -10,8 +10,14 @@ public class ExtractionPoint : MonoBehaviour
         {
             if (LevelManager.Instance.IsObjectiveObtained())
             {
-                //Enable end of level UI
-                LevelManager.Instance.LoadNextLevel();
+                if (LevelManager.Instance.GetLevel() == 5)
+                {
+                    UIManager.Instance.ToggleGameBeatUI();
+                }
+                else
+                {
+                    LevelManager.Instance.LoadNextLevel();
+                }
             }
         }    
     }

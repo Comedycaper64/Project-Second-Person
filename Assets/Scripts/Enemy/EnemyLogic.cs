@@ -62,7 +62,7 @@ public class EnemyLogic : MonoBehaviour
 
     private bool CanSeePlayer()
     {
-        if (!player.activeInHierarchy || !cameraLocation) {return false;}
+        if (!player.activeInHierarchy || !cameraLocation || enemyMovement.IsDisabled()) {return false;}
 
         RaycastHit hit;
         Vector3 playerDir = ((player.transform.position + new Vector3(0, 0.9f, 0)) - cameraLocation.position).normalized; //adding 0.9f to compensate for height
