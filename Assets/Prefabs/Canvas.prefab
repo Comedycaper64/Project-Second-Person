@@ -145,7 +145,7 @@ MonoBehaviour:
   scramblers: []
   teleportButton: {fileID: 874536079985533129}
   cancelButton: {fileID: 874536080131350080}
-  mapRefreshTime: 0.25
+  mapRefreshTime: 0.1
   cameraMapViewRange: 8
   mapTile: {fileID: 2409735426194698744, guid: 2c30489da467741468919e1f7f1d7cf1, type: 3}
   unWalkableSprite: {fileID: 21300000, guid: 0525793900d728a42936791a8a6de63b, type: 3}
@@ -154,6 +154,8 @@ MonoBehaviour:
   scrambledSprite: {fileID: 21300000, guid: a3ced8f7044b9de4787602a9e9b20ea7, type: 3}
   playerSprite: {fileID: 21300000, guid: 0ac55f9f886d827408c102bdf33c5ff7, type: 3}
   cameraSprite: {fileID: 21300000, guid: f82dfc5fc3c5a8f4080a3550427019c8, type: 3}
+  currentCameraSprite: {fileID: 21300000, guid: 3999034958d54364da380a8839a11050,
+    type: 3}
 --- !u!114 &874536078891521793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1435,7 +1437,7 @@ RectTransform:
   - {fileID: 3164229608919695537}
   - {fileID: 6996900527842231216}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1523,6 +1525,7 @@ MonoBehaviour:
   hideText: {fileID: 4126727774014108058}
   disableText: {fileID: 8452754752626946227}
   deathUI: {fileID: 874536079383116213}
+  gameBeatUI: {fileID: 0}
   enemyAlertedSFX: {fileID: 8300000, guid: 04bc4c2d1e5094c4897342a83e9b18d4, type: 3}
   enemySeenSFX: {fileID: 8300000, guid: 26dfec782a1c5dd448e98ec1a46f3f1c, type: 3}
 --- !u!1 &874536079985533129

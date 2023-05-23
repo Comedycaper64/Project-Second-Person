@@ -1859,7 +1859,21 @@ PrefabInstance:
 
         -
         When looking through an enemy, you can Right click to temporarily disable
-        them. During this time, they cannot move or see you.'
+        them. During this time, they cannot move or see you.
+
+        - When teleporting
+        for the first time, the facility can detect you, meaning that the timer begins.
+        You need to escape the facility before the timer reaches zero.'
+      objectReference: {fileID: 0}
+    - target: {fileID: 1755503093520989364, guid: 6d0c47d17dbb2dc469b04ba0d99bd317,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 1755503093520989364, guid: 6d0c47d17dbb2dc469b04ba0d99bd317,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 1755503094207840254, guid: 6d0c47d17dbb2dc469b04ba0d99bd317,
         type: 3}
@@ -5797,7 +5811,7 @@ PrefabInstance:
     - target: {fileID: 4777323181824804606, guid: 9802e701ec85f6b4ba2dd8c9fb7cd188,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.54
+      value: 3.04
       objectReference: {fileID: 0}
     - target: {fileID: 4777323181824804606, guid: 9802e701ec85f6b4ba2dd8c9fb7cd188,
         type: 3}
@@ -6284,6 +6298,11 @@ PrefabInstance:
       propertyPath: startCamera
       value: 
       objectReference: {fileID: 578626270}
+    - target: {fileID: 8911579587378827594, guid: f89c6abb698637944a518c36dded7f1d,
+        type: 3}
+      propertyPath: data.dataString
+      value: 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
+      objectReference: {fileID: 0}
     - target: {fileID: 8911579587391153939, guid: f89c6abb698637944a518c36dded7f1d,
         type: 3}
       propertyPath: width
@@ -7462,37 +7481,37 @@ PrefabInstance:
     - target: {fileID: 8900455801257024047, guid: 1abe7f74644371749a1584434463efed,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 24.061554
+      value: 1.66012
       objectReference: {fileID: 0}
     - target: {fileID: 8900455801257024047, guid: 1abe7f74644371749a1584434463efed,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.1771162
+      value: 3.1771166
       objectReference: {fileID: 0}
     - target: {fileID: 8900455801257024047, guid: 1abe7f74644371749a1584434463efed,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 15.504888
+      value: 2.2471805
       objectReference: {fileID: 0}
     - target: {fileID: 8900455801257024047, guid: 1abe7f74644371749a1584434463efed,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0304147
+      value: 0.92105013
       objectReference: {fileID: 0}
     - target: {fileID: 8900455801257024047, guid: 1abe7f74644371749a1584434463efed,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.0053629116
+      value: 0.16240598
       objectReference: {fileID: 0}
     - target: {fileID: 8900455801257024047, guid: 1abe7f74644371749a1584434463efed,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.98433805
+      value: 0.34858707
       objectReference: {fileID: 0}
     - target: {fileID: 8900455801257024047, guid: 1abe7f74644371749a1584434463efed,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.17356546
+      value: -0.061465293
       objectReference: {fileID: 0}
     - target: {fileID: 8900455801257024047, guid: 1abe7f74644371749a1584434463efed,
         type: 3}
@@ -7961,7 +7980,7 @@ PrefabInstance:
     - target: {fileID: 8213084795744771717, guid: ebcb0496b6177ef4ea9a5b45abec844f,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.25
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8213084795744771717, guid: ebcb0496b6177ef4ea9a5b45abec844f,
         type: 3}

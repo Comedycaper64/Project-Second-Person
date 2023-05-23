@@ -105,7 +105,7 @@ Transform:
   m_Children:
   - {fileID: 6477728831597282678}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 20, y: 41.46, z: 0}
 --- !u!33 &4777323181824804607
 MeshFilter:
@@ -184,7 +184,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   virtualCamera: {fileID: 4777323181228198825}
   cameraModel: {fileID: 5957792411216895948}
-  autoRotate: 1
+  autoRotate: 0
   turnAmount: 20
   turnSpeed: 0.4
 --- !u!1 &4777323182124782391

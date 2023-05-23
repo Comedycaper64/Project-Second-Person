@@ -9,7 +9,9 @@ public class GridMap : MonoBehaviour
     private PlayerMovement playerMovement;
     private PlayerTeleport playerTeleport;
     private GameObject[] cameras;
-    [SerializeField] private List<Scrambler> scramblers = new List<Scrambler>();
+
+    [SerializeField]
+    private List<Scrambler> scramblers = new List<Scrambler>();
 
     private int mapWidth;
     private int mapHeight;
@@ -20,21 +22,43 @@ public class GridMap : MonoBehaviour
     private GridLayoutGroup layoutGroup;
     private GridPosition activeCameraGridPosition;
 
-    [SerializeField] private GameObject teleportButton;
-    [SerializeField] private GameObject cancelButton;
+    [SerializeField]
+    private GameObject teleportButton;
 
-    [SerializeField] private float mapRefreshTime;
-    [SerializeField] private float cameraMapViewRange;
+    [SerializeField]
+    private GameObject cancelButton;
 
-    [SerializeField] private GameObject mapTile;
-    [SerializeField] private Sprite unWalkableSprite;
-    [SerializeField] private Sprite walkableSprite;
-    [SerializeField] private Sprite unseenSprite;
-    [SerializeField] private Sprite scrambledSprite;
-    [SerializeField] private Sprite playerSprite;
-    [SerializeField] private Sprite cameraSprite;
+    [SerializeField]
+    private float mapRefreshTime;
 
-    private void Start() 
+    [SerializeField]
+    private float cameraMapViewRange;
+
+    [SerializeField]
+    private GameObject mapTile;
+
+    [SerializeField]
+    private Sprite unWalkableSprite;
+
+    [SerializeField]
+    private Sprite walkableSprite;
+
+    [SerializeField]
+    private Sprite unseenSprite;
+
+    [SerializeField]
+    private Sprite scrambledSprite;
+
+    [SerializeField]
+    private Sprite playerSprite;
+
+    [SerializeField]
+    private Sprite cameraSprite;
+
+    [SerializeField]
+    private Sprite currentCameraSprite;
+
+    private void Start()
     {
         mapWidth = LevelGrid.Instance.GetWidth();
         mapHeight = LevelGrid.Instance.GetHeight();
@@ -48,7 +72,7 @@ public class GridMap : MonoBehaviour
         playerTeleport = playerMovement.GetComponent<PlayerTeleport>();
         cameras = GameObject.FindGameObjectsWithTag("Camera");
         GameObject[] tempScramblers = GameObject.FindGameObjectsWithTag("Scrambler");
-        foreach(GameObject scrambler in tempScramblers)
+        foreach (GameObject scrambler in tempScramblers)
         {
             scramblers.Add(scrambler.GetComponent<Scrambler>());
         }
@@ -64,27 +88,44 @@ public class GridMap : MonoBehaviour
 
     private void SetScrambledTiles()
     {
-        for(int x = 0; x < mapWidth; x++)
+        for (int x = 0; x < mapWidth; x++)
         {
-            for(int z = 0; z < mapHeight; z++)
+            for (int z = 0; z < mapHeight; z++)
             {
-                LevelGrid.Instance.GetGridObject(new GridPosition(x,z)).SetScrambled(false);
+                LevelGrid.Instance.GetGridObject(new GridPosition(x, z)).SetScrambled(false);
             }
         }
 
-        foreach(Scrambler scrambler in scramblers)
+        foreach (Scrambler scrambler in scramblers)
         {
-            if (!scrambler.scramblerEnabled) {continue;}
-
-            for (int i = scrambler.scramblerPosition.x - scrambler.scramblerRange; i <= scrambler.scramblerPosition.x + scrambler.scramblerRange; i++)
+            if (!scrambler.scramblerEnabled)
             {
-                for (int j = scrambler.scramblerPosition.z - scrambler.scramblerRange; j <= scrambler.scramblerPosition.z + scrambler.scramblerRange; j++)
+                continue;
+            }
+
+            for (
+                int i = scrambler.scramblerPosition.x - scrambler.scramblerRange;
+                i <= scrambler.scramblerPosition.x + scrambler.scramblerRange;
+                i++
+            )
+            {
+                for (
+                    int j = scrambler.scramblerPosition.z - scrambler.scramblerRange;
+                    j <= scrambler.scramblerPosition.z + scrambler.scramblerRange;
+                    j++
+                )
                 {
-                    GridPosition gridPosition = new GridPosition(i,j);
+                    GridPosition gridPosition = new GridPosition(i, j);
                     if (LevelGrid.Instance.IsWithinGrid(gridPosition))
                     {
-                        GridPosition distanceFromScrambler = gridPosition - scrambler.scramblerPosition;
-                        if ((Mathf.Abs(distanceFromScrambler.x) + Mathf.Abs(distanceFromScrambler.z)) <= scrambler.scramblerRange)
+                        GridPosition distanceFromScrambler =
+                            gridPosition - scrambler.scramblerPosition;
+                        if (
+                            (
+                                Mathf.Abs(distanceFromScrambler.x)
+                                + Mathf.Abs(distanceFromScrambler.z)
+                            ) <= scrambler.scramblerRange
+                        )
                         {
                             LevelGrid.Instance.GetGridObject(gridPosition).SetScrambled(true);
                         }
@@ -97,13 +138,18 @@ public class GridMap : MonoBehaviour
     private void GenerateMap()
     {
         ClearMapContainer();
-        for(int x = 0; x < mapWidth; x++)
+        for (int x = 0; x < mapWidth; x++)
         {
-            for(int z = 0; z < mapHeight; z++)
+            for (int z = 0; z < mapHeight; z++)
             {
                 GridPosition currentGridPosition = new GridPosition(x, z);
-                GridMapTile spawnedTile = Instantiate(mapTile, mapContainer).GetComponent<GridMapTile>();
-                spawnedTile.transform.localScale = new Vector3(mapTileScale, mapTileScale, mapTileScale);
+                GridMapTile spawnedTile = Instantiate(mapTile, mapContainer)
+                    .GetComponent<GridMapTile>();
+                spawnedTile.transform.localScale = new Vector3(
+                    mapTileScale,
+                    mapTileScale,
+                    mapTileScale
+                );
                 spawnedTile.SetGridPosition(currentGridPosition);
                 mapTiles.Add(spawnedTile);
             }
@@ -113,12 +159,16 @@ public class GridMap : MonoBehaviour
     }
 
     private IEnumerator UpdateMap()
-    {   
-        GridPosition playerPosition = LevelGrid.Instance.GetGridPosition(playerMovement.transform.position);
+    {
+        GridPosition playerPosition = LevelGrid.Instance.GetGridPosition(
+            playerMovement.transform.position
+        );
         List<GridPosition> cameraPositions = new List<GridPosition>();
-        foreach(GameObject camera in cameras)
+        foreach (GameObject camera in cameras)
         {
-            GridPosition cameraPosition = LevelGrid.Instance.GetGridPosition(camera.transform.position);
+            GridPosition cameraPosition = LevelGrid.Instance.GetGridPosition(
+                camera.transform.position
+            );
             cameraPositions.Add(cameraPosition);
             if (camera.GetComponent<CameraObject>().IsCameraActive())
             {
@@ -126,7 +176,7 @@ public class GridMap : MonoBehaviour
             }
         }
 
-        foreach(GridMapTile tile in mapTiles)
+        foreach (GridMapTile tile in mapTiles)
         {
             GridPosition currentGridPosition = tile.GetGridPosition();
 
@@ -134,7 +184,11 @@ public class GridMap : MonoBehaviour
             {
                 tile.SetImage(playerSprite);
             }
-            else if(!TileInViewRange(currentGridPosition))
+            else if (currentGridPosition == activeCameraGridPosition)
+            {
+                tile.SetImage(currentCameraSprite);
+            }
+            else if (!TileInViewRange(currentGridPosition))
             {
                 tile.SetImage(unseenSprite);
             }
@@ -163,7 +217,12 @@ public class GridMap : MonoBehaviour
 
     public void ToggleTeleportUI(bool enable)
     {
-        if (((playerTeleport.GetAvailableTeleports() == 0) || (!playerTeleport.gameObject.activeInHierarchy)) && enable)
+        if (
+            (
+                (playerTeleport.GetAvailableTeleports() == 0)
+                || (!playerTeleport.gameObject.activeInHierarchy)
+            ) && enable
+        )
         {
             return;
         }
@@ -174,20 +233,29 @@ public class GridMap : MonoBehaviour
 
         if (enable)
         {
-            foreach(GridMapTile tile in mapTiles)
+            foreach (GridMapTile tile in mapTiles)
             {
                 GridPosition currentGridPosition = tile.GetGridPosition();
-                GridPosition playerPosition = LevelGrid.Instance.GetGridPosition(playerMovement.transform.position);
+                GridPosition playerPosition = LevelGrid.Instance.GetGridPosition(
+                    playerMovement.transform.position
+                );
                 GridPosition tileDistanceFromPlayerPosition = currentGridPosition - playerPosition;
-                if ((currentGridPosition == playerPosition) 
+                if (
+                    (currentGridPosition == playerPosition)
                     || !TileInViewRange(currentGridPosition)
-                    || ((Mathf.Abs(tileDistanceFromPlayerPosition.x) + Mathf.Abs(tileDistanceFromPlayerPosition.z)) > playerTeleport.GetTeleportRange()) 
-                    || !LevelGrid.Instance.IsValidGridPosition(currentGridPosition) 
-                    || LevelGrid.Instance.GetGridObject(currentGridPosition).IsScrambled())
+                    || (
+                        (
+                            Mathf.Abs(tileDistanceFromPlayerPosition.x)
+                            + Mathf.Abs(tileDistanceFromPlayerPosition.z)
+                        ) > playerTeleport.GetTeleportRange()
+                    )
+                    || !LevelGrid.Instance.IsValidGridPosition(currentGridPosition)
+                    || LevelGrid.Instance.GetGridObject(currentGridPosition).IsScrambled()
+                )
                 {
                     continue;
                 }
-                else 
+                else
                 {
                     tile.ToggleButton(true);
                 }
@@ -196,12 +264,12 @@ public class GridMap : MonoBehaviour
         else
         {
             DisableMapTiles();
-        }   
+        }
     }
 
     private void DisableMapTiles()
     {
-        foreach(GridMapTile tile in mapTiles)
+        foreach (GridMapTile tile in mapTiles)
         {
             tile.ToggleButton(false);
         }
@@ -210,7 +278,10 @@ public class GridMap : MonoBehaviour
     private bool TileInViewRange(GridPosition gridPosition)
     {
         GridPosition gridDistanceFromActiveCam = gridPosition - activeCameraGridPosition;
-        return ((Mathf.Abs(gridDistanceFromActiveCam.x) + Mathf.Abs(gridDistanceFromActiveCam.z)) <= cameraMapViewRange);
+        return (
+            (Mathf.Abs(gridDistanceFromActiveCam.x) + Mathf.Abs(gridDistanceFromActiveCam.z))
+            <= cameraMapViewRange
+        );
     }
 
     private void DisableTeleportUI(object sender, GridPosition e)
@@ -218,19 +289,17 @@ public class GridMap : MonoBehaviour
         ToggleTeleportUI(false);
     }
 
-    private void OnDestroy() 
+    private void OnDestroy()
     {
-        Scrambler.scramblerToggled -= SetScrambledTiles; 
+        Scrambler.scramblerToggled -= SetScrambledTiles;
         GridMapTile.OnTilePressed -= DisableTeleportUI;
-  
     }
 
     private void ClearMapContainer()
     {
-        foreach(Transform child in mapContainer)
+        foreach (Transform child in mapContainer)
         {
             Destroy(child.gameObject);
         }
     }
-
 }
